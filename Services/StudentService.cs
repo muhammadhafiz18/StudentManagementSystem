@@ -10,9 +10,17 @@ public class StudentService : IStudentService
     private string filePath = "students.json";
     public StudentService() => LoadStudents();
 
-    public void AddStudent(string FirstName, string SecondName, string Faculty)
+    public void AddStudent(string firstName, string secondName, string faculty)
     {
-        throw new NotImplementedException();
+        var student = new Student()
+        {
+            Id = students.Count == 0 ? 1 : students.Last().Id + 1,
+            FirstName = firstName,
+            SecondName = secondName,
+            Faculty = faculty
+        };
+
+        students.Add(student);
     }
 
     public void AssignGrade(int id, string subject, double grade)
@@ -30,13 +38,29 @@ public class StudentService : IStudentService
         throw new NotImplementedException();
     }
 
+    public void SaveStudents()
+    {
+        var options = new JsonSerializerOptions()
+        {
+            WriteIndented = true
+        };
+
+        string json = JsonSerializer.Serialize(students, options);
+
+        File.WriteAllText(filePath, json);
+    }
+
     private void LoadStudents()
     {
         if (File.Exists(filePath))
         {
             string json = File.ReadAllText(filePath);
 
-            students = JsonSerializer.Deserialize<List<Student>>(json) ?? [];
+            if (json != null)
+            {
+                students = JsonSerializer.Deserialize<List<Student>>(json) ?? [];
+            }
+
         }
         else
         {

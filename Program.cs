@@ -18,9 +18,11 @@ while (true)
     {
         case "1":
         case "add student":
-            Console.Clear();
+            Console.Write("Enter first name: ");
             string firstName = Console.ReadLine()!.Trim().ToLower();
+            Console.WriteLine("Enter second name: ");
             string lastName = Console.ReadLine()!.Trim().ToLower();
+            Console.WriteLine("Enter faculty: ");
             string faculty = Console.ReadLine()!.Trim().ToLower();
 
             studentService.AddStudent(firstName, lastName, faculty);
@@ -69,6 +71,7 @@ while (true)
         case "6":
         case "exit":
             Console.WriteLine("good bye");
+            studentService.SaveStudents();
             return;
 
         default:
